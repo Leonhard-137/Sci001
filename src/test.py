@@ -4,20 +4,134 @@ import numpy as np
 from pyat.ccf import iccf, iccf_mc
 import emcee
 import corner
-import os
 
-# 保存原来的 savefig 函数
-_old_savefig = plt.savefig
+# ============== 原始CCF分析代码部分 ==============
 
-def _smart_savefig(path, *args, **kwargs):
-    """自动创建目录的 savefig 替代函数"""
-    directory = os.path.dirname(path)
-    if directory and not os.path.exists(directory):
-        os.makedirs(directory, exist_ok=True)
-    _old_savefig(path, *args, **kwargs)
+df = pd.read_csv('data/Mrk142.csv')
+filters = df['Filter'].unique()
+objects = df['Object'].unique()
 
-# 替换掉原 savefig
-plt.savefig = _smart_savefig
+# 存储CCF结果
+tau_cent_arr = pd.DataFrame(index=objects, columns=filters, dtype=object)
+
+# 存储tau_cent的统计值用于lambda-tau拟合
+tau_cent_med = pd.DataFrame(index=objects, columns=filters, dtype=object)
+tau_cent_err_minus = pd.DataFrame(index=objects, columns=filters, dtype=object)
+tau_cent_err_plus = pd.DataFrame(index=objects, columns=filters, dtype=object)
+
+for obj in objects:
+    # 取 W2 作为驱动
+    sub_drive = df[(df['Object'] == obj) & (df['Filter'] == 'W2')]
+    Mjd_drive = sub_drive['MJD'].to_numpy(float)
+    flux_drive = sub_drive['Flux'].to_numpy(float)
+    err_drive = sub_drive['Error'].to_numpy(float)
+    
+    n_flt = len(filters)
+    fig, axes = plt.subplots(n_flt, 2, figsize=(12, 2.5*n_flt))
+    
+    for i, flt in enumerate(filters):
+        sub = df[(df['Object'] == obj) & (df['Filter'] == flt)]
+        Mjd = sub['MJD'].to_numpy(float)
+        flux = sub['Flux'].to_numpy(float)
+        err = sub['Error'].to_numpy(float)
+        
+        # 如果数据太少就跳过
+        if len(Mjd) < 2 or len(Mjd_drive) < 2:
+            continue
+        
+        # 左侧子图：光变曲线
+        ax_left = axes[i, 0] if n_flt > 1 else axes[0]
+        ax_left.errorbar(Mjd, flux, yerr=err, fmt='o', markersize=4, capsize=3)
+        ax_left.set_ylabel(f'{flt} Flux', fontsize=10)
+        if i == n_flt - 1:
+            ax_left.set_xlabel('MJD', fontsize=10)
+        ax_left.grid(True, alpha=0.3)
+        
+        # 调用 iccf 获取CCF曲线
+        tau, ccf, _, tau_peak_single, tau_cent_single = iccf(
+            Mjd_drive, flux_drive,
+            Mjd, flux,
+            ntau=100, tau_beg=-15, tau_end=15
+        )
+        
+        # 调用 iccf_mc 获取tau_cent分布
+        ccf_arr, tau_peak_arr, tau_cent_arr.loc[obj, flt] = iccf_mc(
+            Mjd_drive, flux_drive, err_drive,
+            Mjd, flux, err,
+            nsim=1000, ntau=100, tau_beg=-15, tau_end=15
+        )
+        
+        # 右侧子图：CCF和tau_cent分布
+        ax_right = axes[i, 1] if n_flt > 1 else axes[1]
+        
+        # 绘制CCF曲线（左y轴）
+        ax_right.plot(tau, ccf, 'k-', linewidth=1.5, label='CCF')
+        ax_right.set_ylabel('CCF', fontsize=10)
+        ax_right.set_xlabel('Time Lag (days)', fontsize=10)
+        
+        # 创建右y轴绘制tau_cent分布
+        ax_right2 = ax_right.twinx()
+        
+        # 绘制tau_cent直方图
+        counts, bins, _ = ax_right2.hist(tau_cent_arr.loc[obj, flt], bins=30, alpha=0.6, 
+                                          color='orange' if np.mean(tau_cent_arr.loc[obj, flt]) > 0 else 'blue',
+                                          density=True, label='τ_cent distribution')
+        
+        # 标记tau_cent平均值
+        med_tau = np.median(tau_cent_arr.loc[obj, flt])
+        tau_cent_med.loc[obj, flt] = med_tau
+        lo, hi = np.percentile(tau_cent_arr.loc[obj, flt], [16, 84])
+        err_minus = med_tau - lo
+        err_plus  = hi - med_tau
+        tau_cent_err_minus.loc[obj, flt] = err_minus
+        tau_cent_err_plus.loc[obj, flt] = err_plus
+        tau_cent_avg = np.mean(tau_cent_arr.loc[obj, flt])
+        tau_cent_err = np.std(tau_cent_arr.loc[obj, flt])
+        ax_right.axvline(med_tau, color='red', linestyle='--', linewidth=1.5, 
+                        label=f'τ_cent = {med_tau:.2f}±{tau_cent_err:.2f}')
+        ax_right2.axvline(x=lo,  color='red', linestyle='--', linewidth=1.2, alpha=0.7)       # 下界
+        ax_right2.axvline(x=hi,  color='red', linestyle='--', linewidth=1.2, alpha=0.7)       # 上界
+        ax_right2.axvspan(lo, hi, color='red', alpha=0.12) 
+        
+        ax_right2.set_ylabel('Probability Density', fontsize=10)
+        ax_right.legend(loc='upper left', fontsize=8)
+        ax_right.grid(True, alpha=0.3)
+        
+        
+        print(f'{obj}-{flt}: τ_cent = {med_tau:.2f} -{err_minus:.2f}/+{err_plus:.2f} days (68% 等尾)')
+    
+    plt.tight_layout()
+    plt.savefig(f'{obj}_ccf_analysis.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+
+# ============== 新增：Lambda-Tau 拟合部分 ==============
+
+# 定义各滤光片的中心波长（单位：Angstrom）
+WAVELENGTHS = {
+    'W2': 1928,    # UVW2
+    'M2': 2236,    # UVM2
+    'W1': 2600,    # UVW1
+    # 'U': 3467,     # Swift,U
+    # 'u':3540,     # SDSS,u
+    'B': 4392,     # Swift,B
+    'g': 4770,     
+    'SV': 5468,     # Swift,V
+    'lV': 5383,
+    'r': 6215,     
+    'i': 7545,     
+    'z': 8700      
+}
+
+# 定义巡天/空间设备的滤光片
+SURVEY_FILTERS = ['U', 
+                  'B',
+                  'W1', 
+                  'W2', 
+                  'M2', 
+                  'SV']
+# Lambda-tau拟合模型：tau = tau0 * [(lambda/lambda0)^beta - 1]
+lambda0 = 1928 # 参考波长
 
 def tau_model(params, wavelength):
     """Lambda-tau模型"""
@@ -119,133 +233,6 @@ def fit_lambda_tau_mcmc(wavelength, tau_obs, tau_err, beta_fixed=None,
     }
     
     return results
-
-# ============== 原始CCF分析代码部分 ==============
-
-df = pd.read_csv('data/Mrk142.csv')
-filters = df['Filter'].unique()
-objects = df['Object'].unique()
-
-# 存储CCF结果
-tau_cent_arr = pd.DataFrame(index=objects, columns=filters, dtype=object)
-
-# 存储tau_cent的统计值用于lambda-tau拟合
-tau_cent_med = pd.DataFrame(index=objects, columns=filters, dtype=object)
-tau_cent_err_minus = pd.DataFrame(index=objects, columns=filters, dtype=object)
-tau_cent_err_plus = pd.DataFrame(index=objects, columns=filters, dtype=object)
-
-for obj in objects:
-    # 取 W2 作为驱动
-    sub_drive = df[(df['Object'] == obj) & (df['Filter'] == 'W2')]
-    Mjd_drive = sub_drive['MJD'].to_numpy(float)
-    flux_drive = sub_drive['Flux'].to_numpy(float)
-    err_drive = sub_drive['Error'].to_numpy(float)
-    
-    n_flt = len(filters)
-    fig, axes = plt.subplots(n_flt, 2, figsize=(12, 2.5*n_flt))
-    
-    for i, flt in enumerate(filters):
-        sub = df[(df['Object'] == obj) & (df['Filter'] == flt)]
-        Mjd = sub['MJD'].to_numpy(float)
-        flux = sub['Flux'].to_numpy(float)
-        err = sub['Error'].to_numpy(float)
-        
-        # 如果数据太少就跳过
-        if len(Mjd) < 2 or len(Mjd_drive) < 2:
-            continue
-        
-        # 左侧子图：光变曲线
-        ax_left = axes[i, 0] if n_flt > 1 else axes[0]
-        ax_left.errorbar(Mjd, flux, yerr=err, fmt='o', markersize=4, capsize=3)
-        ax_left.set_ylabel(f'{flt} Flux', fontsize=10)
-        if i == n_flt - 1:
-            ax_left.set_xlabel('MJD', fontsize=10)
-        ax_left.grid(True, alpha=0.3)
-        
-        # 调用 iccf 获取CCF曲线
-        tau, ccf, _, tau_peak_single, tau_cent_single = iccf(
-            Mjd_drive, flux_drive,
-            Mjd, flux,
-            ntau=100, tau_beg=-15, tau_end=15
-        )
-        
-        # 调用 iccf_mc 获取tau_cent分布
-        ccf_arr, tau_peak_arr, tau_cent_arr.loc[obj, flt] = iccf_mc(
-            Mjd_drive, flux_drive, err_drive,
-            Mjd, flux, err,
-            nsim=1000, ntau=100, tau_beg=-15, tau_end=15
-        )
-        
-        # 右侧子图：CCF和tau_cent分布
-        ax_right = axes[i, 1] if n_flt > 1 else axes[1]
-        
-        # 绘制CCF曲线（左y轴）
-        ax_right.plot(tau, ccf, 'k-', linewidth=1.5, label='CCF')
-        ax_right.set_ylabel('CCF', fontsize=10)
-        ax_right.set_xlabel('Time Lag (days)', fontsize=10)
-        
-        # 创建右y轴绘制tau_cent分布
-        ax_right2 = ax_right.twinx()
-        
-        # 绘制tau_cent直方图
-        counts, bins, _ = ax_right2.hist(tau_cent_arr.loc[obj, flt], bins=30, alpha=0.6, 
-                                          color='orange' if np.mean(tau_cent_arr.loc[obj, flt]) > 0 else 'blue',
-                                          density=True, label='τ_cent distribution')
-        
-        # 标记tau_cent平均值
-        med_tau = np.median(tau_cent_arr.loc[obj, flt])
-        tau_cent_med.loc[obj, flt] = med_tau
-        lo, hi = np.percentile(tau_cent_arr.loc[obj, flt], [16, 84])
-        err_minus = med_tau - lo
-        err_plus  = hi - med_tau
-        tau_cent_err_minus.loc[obj, flt] = err_minus
-        tau_cent_err_plus.loc[obj, flt] = err_plus
-        tau_cent_avg = np.mean(tau_cent_arr.loc[obj, flt])
-        tau_cent_err = np.std(tau_cent_arr.loc[obj, flt])
-        ax_right.axvline(med_tau, color='red', linestyle='--', linewidth=1.5, 
-                        label=f'τ_cent = {med_tau:.2f}±{tau_cent_err:.2f}')
-        ax_right2.axvline(x=lo,  color='red', linestyle='--', linewidth=1.2, alpha=0.7)       # 下界
-        ax_right2.axvline(x=hi,  color='red', linestyle='--', linewidth=1.2, alpha=0.7)       # 上界
-        ax_right2.axvspan(lo, hi, color='red', alpha=0.12) 
-        
-        ax_right2.set_ylabel('Probability Density', fontsize=10)
-        ax_right.legend(loc='upper left', fontsize=8)
-        ax_right.grid(True, alpha=0.3)
-        
-        
-        print(f'{obj}-{flt}: τ_cent = {med_tau:.2f} -{err_minus:.2f}/+{err_plus:.2f} days (68% 等尾)')
-    
-    plt.tight_layout()
-    plt.savefig(f'fig/timeseries/{obj}_ccf_analysis.png', dpi=300, bbox_inches='tight')
-
-
-# ============== 新增：Lambda-Tau 拟合部分 ==============
-
-# 定义各滤光片的中心波长（单位：Angstrom）
-WAVELENGTHS = {
-    'W2': 1928,    # UVW2
-    'M2': 2236,    # UVM2
-    'W1': 2600,    # UVW1
-    # 'U': 3467,     # Swift,U
-    # 'u':3540,     # SDSS,u
-    'B': 4392,     # Swift,B
-    'g': 4770,     
-    'SV': 5468,     # Swift,V
-    'lV': 5383,
-    'r': 6215,     
-    'i': 7545,     
-    'z': 8700      
-}
-
-# 定义巡天/空间设备的滤光片
-SURVEY_FILTERS = ['U', 
-                  'B',
-                  'W1', 
-                  'W2', 
-                  'M2', 
-                  'SV']
-# Lambda-tau拟合模型：tau = tau0 * [(lambda/lambda0)^beta - 1]
-lambda0 = 1928 # 参考波长
 
 # 对每个对象执行lambda-tau拟合
 for obj in objects:
@@ -378,7 +365,8 @@ for obj in objects:
     
     plt.suptitle(f'{obj}: λ-τ Relationship', fontsize=15, fontweight='bold')
     plt.tight_layout()
-    plt.savefig(f'fig/timeseries/{obj}_lambda_tau_fit.png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'{obj}_lambda_tau_fit.png', dpi=300, bbox_inches='tight')
+    plt.show()
     
     # 打印结果表格
     print(f"\n{'='*80}")
@@ -419,9 +407,9 @@ for obj in objects:
         
         fig.suptitle(f'{obj}: {fit_label} - MCMC Posterior', 
                     fontsize=13, fontweight='bold')
-        plt.savefig(f'fig/timeseries/{obj}_{fit_key}_corner.png', dpi=200, bbox_inches='tight')
+        plt.savefig(f'{obj}_{fit_key}_corner.png', dpi=200, bbox_inches='tight')
+        plt.show()
 
 print("\n" + "="*80)
 print("All analysis completed!")
 print("="*80)
-
