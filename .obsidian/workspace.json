@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "9ad9ad767277ec90",
@@ -170,21 +169,21 @@
       "bases:Create new base": false
     }
   },
-  "active": "eff8541639d666db",
+  "active": "533f95f96162f4df",
   "lastOpenFiles": [
-    "Lightcurve_models.obj",
-    "X_t.obj",
-    "samples.obj",
-    "samples_flat.obj",
-    "test_initial_points.txt",
-    "pyroa_analysis_results/input_data/Mrk142_z.dat",
-    "pyroa_analysis_results/input_data/Mrk142_i.dat",
-    "pyroa_analysis_results/input_data/Mrk142_r.dat",
-    "pyroa_analysis_results/input_data/Mrk142_g.dat",
-    "pyroa_analysis_results/input_data/Mrk142_SV.dat",
-    "pyroa_analysis_results/input_data/Mrk142_B.dat",
+    "Mrk142_SV.dat",
+    "data/Mrk142_SV.dat",
+    "Mrk142_ff_fluxflux.csv",
+    "Mrk142_ff_SED.pdf",
+    "Mrk142_ff_fluxflux.pdf",
+    "data/Mrk142_z.dat",
+    "data/Mrk142_i.dat",
+    "data/Mrk142_r.dat",
+    "data/Mrk142_g.dat",
+    "data/Mrk142_B.dat",
+    "data/Mrk142_U.dat",
     "note/背景知识补全.md",
-    "note/PyROA.md",
-    "note/文献调查.md"
+    "note/文献调查.md",
+    "note/PyROA.md"
   ]
 }
