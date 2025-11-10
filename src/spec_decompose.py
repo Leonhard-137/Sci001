@@ -108,9 +108,9 @@ def main():
 
     print("\n== 2) 运行 PyROA 拟合 ==")
     # 直接把 ICCF_TAU 作为 init_tau
-    init_tau = config.get("ICCF_TAU", None)  # 如果配置了 ICCF_TAU，就作为 init_tau 传递
-    fit = run_pyroa_fit(DATADIR, config["obj_name"], filters, config["priors"], init_tau=init_tau)
-    PyROA.Plot(fit)
+    # init_tau = config.get("ICCF_TAU", None)  # 如果配置了 ICCF_TAU，就作为 init_tau 传递
+    # fit = run_pyroa_fit(DATADIR, config["obj_name"], filters, config["priors"], init_tau=init_tau)
+    # PyROA.Plot(fit)
 
 
     print("\n== 3) Flux–Flux & SED ==")

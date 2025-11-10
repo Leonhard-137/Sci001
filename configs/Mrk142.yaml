@@ -1,7 +1,7 @@
 obj_name: Mrk142
 csv: data/Mrk142.csv
-filters: [M2, W2, W1, SV, U, B, g, r, i, z]
-wavelengths: [2246,1928,2600,5648,3465,4392,4770,6215,7545,8700]  # 观测波长(Å)
+filters: [W2, M2, W1, U, B, g, SV, r, i, z]
+wavelengths: [1928,2236,2600,3467,4392,4770,5468,6215,7545,8700]  # 观测波长(Å)
 delay_ref: W2
 gal_ref: M2
 redshift: 0.0446

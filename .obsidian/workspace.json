@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "note/PyROA.md",
+                "file": "note/文献调查.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "PyROA"
+              "title": "文献调查"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "9ad9ad767277ec90",
@@ -169,21 +170,24 @@
       "bases:Create new base": false
     }
   },
-  "active": "533f95f96162f4df",
+  "active": "eff8541639d666db",
   "lastOpenFiles": [
-    "Mrk142_SV.dat",
-    "data/Mrk142_SV.dat",
     "Mrk142_ff_fluxflux.csv",
     "Mrk142_ff_SED.pdf",
     "Mrk142_ff_fluxflux.pdf",
-    "data/Mrk142_z.dat",
-    "data/Mrk142_i.dat",
-    "data/Mrk142_r.dat",
-    "data/Mrk142_g.dat",
-    "data/Mrk142_B.dat",
-    "data/Mrk142_U.dat",
+    "Lightcurve_models.obj",
+    "X_t.obj",
+    "samples.obj",
+    "samples_flat.obj",
+    "test_initial_points.txt",
+    "Mrk142_z.dat",
+    "Mrk142_i.dat",
+    "Mrk142_r.dat",
+    "Figure_100.png",
+    "Pasted image 20251109220704.png",
+    "Pasted image 20251109220650.png",
+    "note/PyROA.md",
     "note/背景知识补全.md",
-    "note/文献调查.md",
-    "note/PyROA.md"
+    "note/文献调查.md"
   ]
 }
