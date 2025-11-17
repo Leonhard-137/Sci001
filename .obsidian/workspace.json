@@ -6,9 +6,31 @@
       {
         "id": "9c9525145687a4b3",
         "type": "tabs",
+        "dimension": 54.74413646055437,
         "children": [
           {
-            "id": "eff8541639d666db",
+            "id": "5e1df9dd8cbbea62",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "note/SED拟合记录.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "SED拟合记录"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fa30c1d3a324bf97",
+        "type": "tabs",
+        "dimension": 45.25586353944563,
+        "children": [
+          {
+            "id": "1907c50f5c7b98b8",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -44,7 +66,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "文件列表"
             }
           },
           {
@@ -78,8 +100,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "9ad9ad767277ec90",
@@ -161,33 +182,35 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:创建新数据库": false
     }
   },
-  "active": "eff8541639d666db",
+  "active": "5e1df9dd8cbbea62",
   "lastOpenFiles": [
-    "Mrk142_ff_fluxflux.csv",
-    "Mrk142_ff_SED.pdf",
-    "Mrk142_ff_fluxflux.pdf",
+    "note/PyROA.md",
+    "note/文献调查.md",
+    "pyroa_convergence.pdf",
+    "Mrk142_corner_tau.pdf",
+    "Mrk142_chains_tau.pdf",
+    "Mrk142_lagspectrum.png",
+    "Mrk142_lightcurves.png",
+    "fig/Figure_100.png",
+    "note/SED拟合记录.md",
+    "Mrk142_powerlaw_fit.pdf",
+    "Mrk142_fluxflux.csv",
+    "Mrk142_SED.pdf",
+    "Mrk142_fluxflux.pdf",
     "Lightcurve_models.obj",
     "X_t.obj",
     "samples.obj",
-    "samples_flat.obj",
-    "test_initial_points.txt",
-    "Mrk142_z.dat",
-    "Mrk142_i.dat",
-    "Mrk142_r.dat",
     "Figure_100.png",
     "Pasted image 20251109220704.png",
-    "Pasted image 20251109220650.png",
-    "note/PyROA.md",
-    "note/背景知识补全.md",
-    "note/文献调查.md"
+    "Pasted image 20251109220650.png"
   ]
 }

@@ -120,7 +120,7 @@ def fit_lambda_tau_mcmc(wavelength, tau_obs, tau_err, beta_fixed=None,
     
     return results
 
-# ============== 原始CCF分析代码部分 ==============
+# ============== CCF分析部分 ==============
 
 df = pd.read_csv('data/Mrk142.csv')
 filters = df['Filter'].unique()

@@ -3,12 +3,12 @@ csv: data/Mrk142.csv
 filters: [W2, M2, W1, U, B, g, SV, r, i, z]
 wavelengths: [1928,2236,2600,3467,4392,4770,5468,6215,7545,8700]  # 观测波长(Å)
 delay_ref: W2
-gal_ref: M2
+gal_ref: W2
 redshift: 0.0446
 ebv: 0.0136
 ICCF_TAU: [0.73, 0.80, 1.52, 0.81, 0.81, 1.05, 1.28, 1.07, 1.54, 0.81]  # 用列表替代字典
-Nsamples: 1000
-Nburnin: 500
+Nsamples: 10000
+Nburnin: 5000
 priors:
   - [0.5, 2.0]      # A 的范围
   - [0.5, 2.0]      # B 的范围
