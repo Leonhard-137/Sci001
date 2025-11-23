@@ -18,3 +18,57 @@
 不过现在新的难题出现了，我要拟合这个过程的话，需要很强的算力作为支撑，我现在的小参数都要运行十五分钟，那足以让mcmc收敛的话起码要一个小时？此外，我有十多个数据，这样的话，起码要跑半天，再加上其他地方也要用mcmc，这就奔着20h+去了，有点可怕。
 当然我也有一点解决的方法，改原始模型，把拟合时间延迟的部分删掉，直接用iccf的结果，这样可以省略掉三分之一的参数，需要七八个小时，好像也不少啊哈哈哈。
 另外要考虑的就是，我现在还是要计算哈勃常数。这篇论文复现成功后，还是有核内消光和最终的哈勃常数计算要做。当然我现在怀疑核内消光是不是有用，因为我感觉只要符合powerlaw就行了吧？还要看后续的研究。
+
+---
+我增加了MCMC的Walker数量和迭代次数，现在的话，其实我感觉结果没啥区别呀，好像是比之前更接近4/3了，不过差别不大吧。至于另外一个参数为什么差别那么大现在我也不知道，我先做一个评估报告。
+评估过程中发现参数A的异常误差是AI给的公式写错了，无语...
+
+---
+# SED分析评估报告
+## 1.拟合基本情况：
+对象：Mrk142
+目的概述：进行SED分析，验证$flux - \lambda$关系是不是符合Powerlaw
+方法概述：使用Pyroa程序，模型采用$f_{\lambda} = x(t-\tau)A_{\lambda} + R_{\lambda}$，同时拟合每个波长的RMS谱、均值和时间延迟。得到参数后，利用参考波段计算星系流量，取对数，使用scipy库拟合$\boxed{f_{max} - f_{min}——\lambda}$关系得到。
+拟合结果概述：从自相关时间来看，最后链或许没收敛；重构曲线大部分在原始数据内，但是z波段偏离相对严重；拟合同时拟合了时间延迟，但是这个结果和ICCF差异较大；Flux-FLux拟合、SED、powerlaw的拟合情况还可以，最终Powerlaw拟合结果是：
+	formula：$Y = AX^{\beta}$
+	Slope β (expected -4/3 ≈ -1.3333): -1.3044 ± 0.0630
+	Intercept a (log10 A): 8.0230 ± 0.2101
+	Weighted χ²_red = 0.427
+	Deviation from -4/3: 0.0289  (0.46 σ)
+其他注意事项：Cackett2020论文把U波段的Sloan数据和Swift数据分开了，但是我没有分开。
+## 2.详细情况：
+
+1. 重构曲线和原始数据：原始数据有一些看着是异常的分布我没有剔除，结果基本上符合趋势，起码重构曲线绝大部分在数据的误差内。需要注意的是z波段，很多数据点脱离了误差的区间。
+![[Mrk142_lightcurves.png]]
+
+2. 时间延迟：拟合结果和ICCF得到的结果不一致（很多波段超2-3$\sigma$），我并不清楚情况（可能是参数仍不够大、模型过于简单，也可能iccf的结果不对）。
+![[Mrk142_chains_tau.pdf]]
+
+![[Mrk142_corner_tau.pdf]]
+这个版本的时间延迟$\tau-\lambda$关系是：
+![[Mrk142_lagspectrum.png]]
+几乎是弥散的，鉴于Cackett2020中说：
+	Although this is a simplified model that does not account for any time lags, the time lags only act to add scatter around the linear flux–flux relations.
+   所以我并没有过多的注意这个问题对最后SED结果的影响。简单说明一下为什么时间延迟不会显著影响SED拟合的结果：
+   如果$\tau$光变曲线的变化时标很小，有：
+   $$
+   X(t - \tau) \approx X(t) - \tau \dot{X}(t)
+   $$
+   模型成为：
+   $$
+   F(t) = AX(t-\tau) + B \approx AX(t) + B - A\dot{X}(t)\tau
+   $$
+   附加项相对于不考虑时间延迟的模型是一个小量。
+2. flux-xt图：这部分是用来计算星系流量和流量峰值的。
+![[Mrk142_fluxflux.pdf]]
+
+3. SED拟合：图像至少和Cackett论文中是类似的。
+![[Mrk142_SED.pdf]]
+这里的误差阴影
+4. powerlaw拟合结果：
+	formula：$Y = AX^{\beta}$
+	Slope β (expected -4/3 ≈ -1.3333): -1.3044 ± 0.0630
+	Intercept a (log10 A): 8.0230 ± 0.2101
+	Weighted χ²_red = 0.427
+	Deviation from -4/3: 0.0289  (0.46 σ)
+   powerlaw拟合比较好

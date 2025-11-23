@@ -6,7 +6,6 @@
       {
         "id": "9c9525145687a4b3",
         "type": "tabs",
-        "dimension": 54.74413646055437,
         "children": [
           {
             "id": "5e1df9dd8cbbea62",
@@ -21,26 +20,17 @@
               "icon": "lucide-file",
               "title": "SED拟合记录"
             }
-          }
-        ]
-      },
-      {
-        "id": "fa30c1d3a324bf97",
-        "type": "tabs",
-        "dimension": 45.25586353944563,
-        "children": [
+          },
           {
-            "id": "1907c50f5c7b98b8",
+            "id": "0c769a3b06d3aa27",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "note/文献调查.md",
-                "mode": "source",
-                "source": false
+                "file": "pyroa_convergence.pdf"
               },
-              "icon": "lucide-file",
-              "title": "文献调查"
+              "icon": "lucide-file-text",
+              "title": "pyroa_convergence"
             }
           }
         ]
@@ -100,7 +90,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "9ad9ad767277ec90",
@@ -193,24 +184,28 @@
   },
   "active": "5e1df9dd8cbbea62",
   "lastOpenFiles": [
-    "note/PyROA.md",
-    "note/文献调查.md",
     "pyroa_convergence.pdf",
-    "Mrk142_corner_tau.pdf",
     "Mrk142_chains_tau.pdf",
+    "note/SED拟合记录.md",
     "Mrk142_lagspectrum.png",
     "Mrk142_lightcurves.png",
-    "fig/Figure_100.png",
-    "note/SED拟合记录.md",
     "Mrk142_powerlaw_fit.pdf",
-    "Mrk142_fluxflux.csv",
     "Mrk142_SED.pdf",
+    "fig/Figure_100.png",
+    "fig/timeseries/Mrk142_lambda_tau_fit.png",
+    "fig/timeseries/Mrk142_ccf_analysis.png",
+    "fig/timeseries/Mrk142_beta_free_corner.png",
+    "fig/timeseries/Mrk142_beta_4_3_corner.png",
+    "fig/timeseries/Mrk142_beta_2_corner.png",
     "Mrk142_fluxflux.pdf",
+    "Mrk142_corner_tau.pdf",
+    "note/PyROA.md",
+    "note/文献调查.md",
+    "Mrk142_fluxflux.csv",
     "Lightcurve_models.obj",
     "X_t.obj",
     "samples.obj",
     "Figure_100.png",
-    "Pasted image 20251109220704.png",
-    "Pasted image 20251109220650.png"
+    "Pasted image 20251109220704.png"
   ]
 }
