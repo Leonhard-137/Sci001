@@ -131,9 +131,9 @@ def main():
         band_colors = (band_colors * (len(filters) // len(band_colors) + 1))[:len(filters)]
 
     print("\n== 2) 运行 PyROA 拟合 ==")
-    # 直接把 ICCF_TAU 作为 init_tau
-    init_tau = config.get("ICCF_TAU", None)
-    fit = run_pyroa_fit(DATADIR, config["obj_name"], filters, config["priors"], init_tau=init_tau)
+    # # 直接把 ICCF_TAU 作为 init_tau
+    # init_tau = config.get("ICCF_TAU", None)
+    # fit = run_pyroa_fit(DATADIR, config["obj_name"], filters, config["priors"], init_tau=init_tau)
 
     # ================== 使用 Utils 里的所有可用绘图 ==================
 

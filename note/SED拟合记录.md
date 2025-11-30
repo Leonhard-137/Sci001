@@ -72,3 +72,6 @@
 	Weighted χ²_red = 0.427
 	Deviation from -4/3: 0.0289  (0.46 σ)
    powerlaw拟合比较好
+5.整体收敛情况：
+自相关时间没有收敛，
+![[pyroa_convergence.pdf]]
