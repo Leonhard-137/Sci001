@@ -4,11 +4,33 @@
     "type": "split",
     "children": [
       {
-        "id": "9c9525145687a4b3",
+        "id": "15aa7922a2e48c34",
         "type": "tabs",
+        "dimension": 68.81663113006397,
         "children": [
           {
-            "id": "5e1df9dd8cbbea62",
+            "id": "2bc02c4342441eda",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "note/H0计算记录.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "H0计算记录"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fff8b842e673e837",
+        "type": "tabs",
+        "dimension": 31.183368869936036,
+        "children": [
+          {
+            "id": "0be75bfcec8199dd",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -19,18 +41,6 @@
               },
               "icon": "lucide-file",
               "title": "SED拟合记录"
-            }
-          },
-          {
-            "id": "0c769a3b06d3aa27",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "pyroa_convergence.pdf"
-              },
-              "icon": "lucide-file-text",
-              "title": "pyroa_convergence"
             }
           }
         ]
@@ -106,7 +116,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "note/背景知识补全.md",
+                "file": "note/H0计算记录.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +126,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 背景知识补全"
+              "title": "H0计算记录 的反向链接列表"
             }
           },
           {
@@ -181,30 +191,33 @@
       "bases:创建新数据库": false
     }
   },
-  "active": "5e1df9dd8cbbea62",
+  "active": "2bc02c4342441eda",
   "lastOpenFiles": [
+    "fig/Hubble/corner_plot.png",
+    "fig/Hubble/autocorr_time.png",
+    "fig/Hubble/chain_plot.png",
+    "fig/Hubble",
+    "fig/timeseries/Figure_100.png",
+    "fig/timeseries/Mrk142_lambda_tau_fit.png",
+    "fig/timeseries/Mrk142_beta_2_corner.png",
+    "fig/timeseries/Mrk142_beta_4_3_corner.png",
+    "fig/timeseries/Mrk142_beta_free_corner.png",
+    "fig/timeseries/Mrk142_ccf_analysis.png",
+    "fig/Figure_100.png",
+    "note/H0计算记录.md",
+    "note/SED拟合记录.md",
+    "Mrk142_timeseries.csv",
+    "src/__pycache__/time_series.cpython-311.pyc",
+    "src/__pycache__/dis_H_cal.cpython-311.pyc",
+    "未命名.md",
     "pyroa_convergence.pdf",
     "Mrk142_chains_tau.pdf",
-    "note/SED拟合记录.md",
     "Mrk142_lagspectrum.png",
-    "Mrk142_lightcurves.png",
     "Mrk142_powerlaw_fit.pdf",
     "Mrk142_SED.pdf",
-    "fig/Figure_100.png",
-    "fig/timeseries/Mrk142_lambda_tau_fit.png",
-    "fig/timeseries/Mrk142_ccf_analysis.png",
-    "fig/timeseries/Mrk142_beta_free_corner.png",
-    "fig/timeseries/Mrk142_beta_4_3_corner.png",
-    "fig/timeseries/Mrk142_beta_2_corner.png",
     "Mrk142_fluxflux.pdf",
     "Mrk142_corner_tau.pdf",
     "note/PyROA.md",
-    "note/文献调查.md",
-    "Mrk142_fluxflux.csv",
-    "Lightcurve_models.obj",
-    "X_t.obj",
-    "samples.obj",
-    "Figure_100.png",
-    "Pasted image 20251109220704.png"
+    "note/文献调查.md"
   ]
 }

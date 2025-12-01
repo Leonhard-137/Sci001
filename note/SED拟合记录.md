@@ -28,8 +28,8 @@
 ## 1.拟合基本情况：
 对象：Mrk142
 目的概述：进行SED分析，验证$flux - \lambda$关系是不是符合Powerlaw
-方法概述：使用Pyroa程序，模型采用$f_{\lambda} = x(t-\tau)A_{\lambda} + R_{\lambda}$，同时拟合每个波长的RMS谱、均值和时间延迟。得到参数后，利用参考波段计算星系流量，取对数，使用scipy库拟合$\boxed{f_{max} - f_{min}——\lambda}$关系得到。
-拟合结果概述：从自相关时间来看，最后链或许没收敛；重构曲线大部分在原始数据内，但是z波段偏离相对严重；拟合同时拟合了时间延迟，但是这个结果和ICCF差异较大；Flux-FLux拟合、SED、powerlaw的拟合情况还可以，最终Powerlaw拟合结果是：
+方法概述：使用Pyroa程序，模型采用$f_{\lambda} = x(t-\tau)A_{\lambda} + R_{\lambda}$，同时拟合每个波长的RMS谱、均值和时间延迟。得到参数后，利用参考波段计算星系流量，取对数，使用scipy库拟合$\boxed{f_{max} - f_{min}——\lambda}$关系得到SED关系。
+拟合结果概述：从自相关时间来看，最后链或许没收敛；重构曲线大部分在原始数据内，但是z波段偏离相对严重；拟合同时拟合了时间延迟，结果和ICCF差异较大；Flux-FLux拟合、SED、powerlaw的拟合情况还可以，最终Powerlaw拟合结果是：
 	formula：$Y = AX^{\beta}$
 	Slope β (expected -4/3 ≈ -1.3333): -1.3044 ± 0.0630
 	Intercept a (log10 A): 8.0230 ± 0.2101

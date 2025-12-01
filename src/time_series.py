@@ -1,3 +1,4 @@
+from logging import config
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -5,7 +6,18 @@ from pyat.ccf import iccf, iccf_mc
 import emcee
 import corner
 import os
+from pathlib import Path
+import yaml
 
+CONFIG_PATH = Path("configs/Mrk142.yaml")
+
+def load_config(config_path):
+    with open(config_path, "r", encoding="utf-8") as file:
+        config = yaml.safe_load(file)
+    return config
+
+config = load_config(CONFIG_PATH)
+obj_name = config['obj_name']
 # 保存原来的 savefig 函数
 _old_savefig = plt.savefig
 
@@ -226,12 +238,12 @@ WAVELENGTHS = {
     'W2': 1928,    # UVW2
     'M2': 2236,    # UVM2
     'W1': 2600,    # UVW1
-    # 'U': 3467,     # Swift,U
+    'U': 3467,     # Swift,U
     # 'u':3540,     # SDSS,u
     'B': 4392,     # Swift,B
     'g': 4770,     
     'SV': 5468,     # Swift,V
-    'lV': 5383,
+    # 'lV': 5383,
     'r': 6215,     
     'i': 7545,     
     'z': 8700      
@@ -421,6 +433,20 @@ for obj in objects:
                     fontsize=13, fontweight='bold')
         plt.savefig(f'fig/timeseries/{obj}_{fit_key}_corner.png', dpi=200, bbox_inches='tight')
 
+    tau_corr = tau_values + result['tau0']
+    tau_corr_err = tau_errs + result['tau0_err']
+    # 储存结果
+    d1 = {'wave':wavelengths,
+         'tau':tau_values,
+         'tau_err':tau_errs,
+         'tau0':result['tau0'],
+         'tau0_err':result['tau0_err'],
+         'tau_corr':tau_corr,
+         'tau_corr_err':tau_corr_err
+    }
+
+    df = pd.DataFrame(data=d1)
+    df.to_csv(obj_name + '_timeseries.csv', index=False)
 print("\n" + "="*80)
 print("All analysis completed!")
 print("="*80)
