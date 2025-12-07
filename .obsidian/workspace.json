@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "note/H0计算记录.md",
+                "file": "note/源适配记录.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "H0计算记录"
+              "title": "源适配记录"
             }
           }
         ]
@@ -193,31 +193,32 @@
   },
   "active": "2bc02c4342441eda",
   "lastOpenFiles": [
+    "Mrk509_timeseries.csv",
+    "fig/timeseries/Mrk509_beta_free_corner.png",
+    "fig/timeseries/Mrk509_beta_2_corner.png",
+    "fig/timeseries/Mrk509_beta_4_3_corner.png",
+    "fig/timeseries/Mrk509_lambda_tau_fit.png",
+    "fig/timeseries/Mrk509_ccf_analysis.png",
+    "configs/Mrk509.yaml",
+    "configs/Mrk142 - 副本.yaml",
+    "data/NGC5548.csv",
+    "data/NGC4593.csv",
+    "data/NGC4151.csv",
+    "data/Mrk509.csv",
+    "note/H0计算记录.md",
+    "note/源适配记录.md",
+    "note/PyROA.md",
     "fig/Hubble/corner_plot.png",
     "fig/Hubble/autocorr_time.png",
     "fig/Hubble/chain_plot.png",
     "fig/Hubble",
     "fig/timeseries/Figure_100.png",
     "fig/timeseries/Mrk142_lambda_tau_fit.png",
-    "fig/timeseries/Mrk142_beta_2_corner.png",
-    "fig/timeseries/Mrk142_beta_4_3_corner.png",
-    "fig/timeseries/Mrk142_beta_free_corner.png",
-    "fig/timeseries/Mrk142_ccf_analysis.png",
-    "fig/Figure_100.png",
-    "note/H0计算记录.md",
     "note/SED拟合记录.md",
     "Mrk142_timeseries.csv",
     "src/__pycache__/time_series.cpython-311.pyc",
     "src/__pycache__/dis_H_cal.cpython-311.pyc",
     "未命名.md",
-    "pyroa_convergence.pdf",
-    "Mrk142_chains_tau.pdf",
-    "Mrk142_lagspectrum.png",
-    "Mrk142_powerlaw_fit.pdf",
-    "Mrk142_SED.pdf",
-    "Mrk142_fluxflux.pdf",
-    "Mrk142_corner_tau.pdf",
-    "note/PyROA.md",
     "note/文献调查.md"
   ]
 }

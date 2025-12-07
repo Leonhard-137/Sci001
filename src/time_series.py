@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import yaml
 
-CONFIG_PATH = Path("configs/Mrk142.yaml")
+CONFIG_PATH = Path("configs/Mrk509.yaml")
 
 def load_config(config_path):
     with open(config_path, "r", encoding="utf-8") as file:
@@ -134,7 +134,7 @@ def fit_lambda_tau_mcmc(wavelength, tau_obs, tau_err, beta_fixed=None,
 
 # ============== CCF分析部分 ==============
 
-df = pd.read_csv('data/Mrk142.csv')
+df = pd.read_csv('data/Mrk509.csv')
 filters = df['Filter'].unique()
 objects = df['Object'].unique()
 
@@ -242,7 +242,7 @@ WAVELENGTHS = {
     # 'u':3540,     # SDSS,u
     'B': 4392,     # Swift,B
     'g': 4770,     
-    'SV': 5468,     # Swift,V
+    'V': 5468,     # Swift,V
     # 'lV': 5383,
     'r': 6215,     
     'i': 7545,     
